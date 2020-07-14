@@ -1,0 +1,19 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-image: url("images/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Montserrat';
+  height: 100%;
+}
+
+#navbar {
+  left: 35%;
+  position: absolute;
+  top: 30%;
+  width: 30%;
+}

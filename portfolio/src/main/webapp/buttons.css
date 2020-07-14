@@ -1,23 +1,22 @@
-.btn {
+.button {
+  align-items: center;
   background: #222;
-  height: 50px;
-  width: 100%;
-  margin: 5px;
   border: none;
   border-radius: 10px;
   color: #eee;
+  display: flex;
   font-size: 40px;
   font-family: 'Cookie', cursive;
-  position: relative;
-  transition: 1s;
-  -webkit-tap-highlight-color: #F4AFB4;
-  display: flex;
-  align-items: center;
+  height: 50px;
   justify-content: center;
-  cursor: pointer;
+  margin: 5px;
+  position: relative;
+  -webkit-tap-highlight-color: #f4afb4;
   text-decoration: none;
+  transition: 1s;
+  width: 100%;
 }
 
-.btn:hover {
-  background: #F4AFB4;
+.button:hover {
+  background: #f4afb4;
 }
