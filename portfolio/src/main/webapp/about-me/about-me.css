@@ -1,4 +1,5 @@
 .photo-frames {
+  align-items: center;
   background-color: #f4afb4;
   border-radius: 50%;
   left: 20%;
