@@ -1,44 +1,37 @@
+/* Text formatting rules. */
+
+.title {
+  font-family: 'Cookie', cursive;
+  font-size: 50px;
+}
+
+.description {
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  height: 200px; /* Mandatory for center positioning text inside bubble. */
+  justify-content: center;
+}
+
+/* Exit button placement */
+
+#exit-button {
+  left: 50%;
+  position: relative;
+  top: 60%;
+  width: 30%;
+}
+
+/* General img-bubble rules. */
+
 .img-bubble {
   align-items: center;
   background-color: #f4afb4;
   border-radius: 50%;
-  height: 100px;
+  height: 80px;
   padding: 10px;
   position: absolute;
-  width: 100px;
-}
-
-.img-bubble-big {
-    display: none;
-}
-
-.description {
-  display: -webkit-flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
-}
-
-.img-bubble:hover +
-.img-bubble-big {
-  align-items: center;
-  background-color: #eb6f78;
-  border-radius: 50%;
-  display: block;
-  height: 400px;
-  justify-content: center;
-  left: 20%;
-  top: 20%;
-  position: absolute;
-  text-align: center;
-  width: 400px;
-}
-
-#oij-bubble {
-  position: absolute;
-  left: 20%;
-  top: 20%;
+  width: 80px;
 }
 
 .img-bubble
@@ -51,3 +44,49 @@
   height: 100%;
 }
 
+/* General rules for img-bubble-big. */
+
+.img-bubble-big {
+    display: none;
+}
+
+.img-bubble:hover +
+.img-bubble-big {
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 10%;
+  display: block;
+  height: 200px;
+  justify-content: center;
+  left: 50%;
+  top: 25%;
+  position: absolute;
+  text-align: center;
+  width: 30%;
+}
+
+/* Image bubbles positioning. */
+
+#oij-bubble {
+  position: absolute;
+  left: 20%;
+  top: 20%;
+}
+
+#samsung-bubble {
+  position: absolute;
+  left: 15%;
+  top: 40%;
+}
+
+#google-bubble {
+  position: absolute;
+  left: 20%;
+  top: 60%;
+}
+
+#staszic-bubble {
+  position: absolute;
+  left: 25%;
+  top: 40%;
+}
