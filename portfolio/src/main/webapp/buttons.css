@@ -1,0 +1,23 @@
+.btn {
+  background: #222;
+  height: 50px;
+  width: 100%;
+  margin: 5px;
+  border: none;
+  border-radius: 10px;
+  color: #eee;
+  font-size: 40px;
+  font-family: 'Cookie', cursive;
+  position: relative;
+  transition: 1s;
+  -webkit-tap-highlight-color: #F4AFB4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #F4AFB4;
+}
