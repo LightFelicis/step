@@ -1,4 +1,4 @@
-let placesCoords = {
+const placesCoords = {
                     "berlin" : {lat: 52.521999, lng: 13.413016},
                     "default" : {lat: 52.048947, lng: 20.442758},
                     "disneyland" : {lat: 48.869486, lng: 2.780874},
@@ -20,21 +20,10 @@ function initMap() {
   setLocation("default");
 }
 
-document.getElementById("berlin").addEventListener("click",
-    function() { setLocation("berlin"); });
-
-document.getElementById("disneyland").addEventListener("click",
-    function() { setLocation("disneyland"); });
-
-document.getElementById("krakow").addEventListener("click",
-    function() { setLocation("krakow"); });
-
-document.getElementById("kolobrzeg").addEventListener("click",
-    function() { setLocation("kolobrzeg"); });
-
-document.getElementById("matterhorn").addEventListener("click",
-    function() { setLocation("matterhorn"); });
-
-document.getElementById("zurich").addEventListener("click",
-    function() { setLocation("zurich"); });
-
+Object.keys(placesCoords).forEach((place, _) => {
+  let element = document.getElementById(place);
+  if (element != null) {
+    element.addEventListener("click",
+    () => { setLocation(place); });
+  }
+});
