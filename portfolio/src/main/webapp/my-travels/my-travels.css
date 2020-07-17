@@ -1,0 +1,53 @@
+/* Photos from travels section rules. */
+
+#travel-photos-box {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: 60%;
+  justify-content: center;
+  left: 15%;
+  position: absolute;
+  top: 20%;
+  max-width: 40%;
+  min-width: 300px;
+}
+
+img {
+  background-color: #f4afb4;
+  border-radius: 10%;
+  margin: 2px;
+  max-height: 33%;
+  padding: 5px;
+}
+
+@media (max-width:1000px) {
+  img {
+    border-radius: 10%;
+    padding: 2px;
+    max-height: 25%;
+  }
+}
+
+/* Travels description section rules. */
+
+#travel-description-box {
+  height: 60%;
+  max-width: 40%;
+  min-width: 300px;
+  left: 60%;
+  position: absolute;
+  top: 20%;
+}
+
+#map {
+  background-color: #976a6d;
+  height: 50%;
+  margin: 0 0 5px 0;
+}
+
+#comment {
+  background-color: #888484;
+  height: 50%;
+}
