@@ -1,0 +1,108 @@
+/* Text formatting rules. */
+
+.title {
+  font-family: 'Cookie', cursive;
+  font-size: 50px;
+}
+
+.description {
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  height: 200px; /* Mandatory for center positioning text inside bubble. */
+  justify-content: center;
+}
+
+/* Exit button placement */
+
+#exit-button {
+  left: 50%;
+  position: relative;
+  top: 60%;
+  width: 30%;
+}
+
+/* description-placeholder rules */
+
+#description-placeholder {
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 10%;
+  display: block;
+  height: 200px;
+  justify-content: center;
+  left: 50%;
+  top: 25%;
+  position: fixed;
+  text-align: center;
+  width: 30%;
+}
+
+/* General img-bubble rules. */
+
+.img-bubble {
+  align-items: center;
+  background-color: #f4afb4;
+  border-radius: 50%;
+  height: 80px;
+  padding: 10px;
+  position: absolute;
+  width: 80px;
+}
+
+.img-bubble
+.bubble-content {
+  border-radius: 50%;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* General rules for img-bubble-big. */
+
+.img-bubble-big {
+    display: none;
+}
+
+.img-bubble:hover +
+.img-bubble-big {
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 10%;
+  display: block;
+  height: 200px;
+  justify-content: center;
+  left: 50%;
+  top: 25%;
+  position: absolute;
+  text-align: center;
+  width: 30%;
+}
+
+/* Image bubbles positioning. */
+
+#oij-bubble {
+  left: 20%;
+  position: absolute;
+  top: 20%;
+}
+
+#samsung-bubble {
+  left: 15%;
+  position: absolute;
+  top: 40%;
+}
+
+#google-bubble {
+  left: 20%;
+  position: absolute;
+  top: 60%;
+}
+
+#staszic-bubble {
+  left: 25%;
+  position: absolute;
+  top: 40%;
+}
