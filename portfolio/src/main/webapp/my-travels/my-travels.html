@@ -9,18 +9,22 @@
     <link rel="stylesheet" href="my-travels.css">
   </head>
   <body>
-    <div id="travel-photos-box">
-      <img src="images/matterhorn.jpg">
-      <img src="images/zurich.jpg">
-      <img src="images/krakow.jpg">
-      <img src="images/disneyland.jpg">
-      <img src="images/kolobrzeg.jpg">
-      <img src="images/berlin.jpg">
+    <div class="with-frame" id="travel-photos-box">
+      <img id="matterhorn" src="images/matterhorn.jpg">
+      <img id="zurich" src="images/zurich.jpg">
+      <img id="krakow" src="images/krakow.jpg">
+      <img id="disneyland" src="images/disneyland.jpg">
+      <img id="kolobrzeg" src="images/kolobrzeg.jpg">
+      <img id="berlin" src="images/berlin.jpg">
     </div>
     <div id="travel-description-box">
       <div id="map"> Map placeholder. </div>
       <div id="comment"> Travel comment placeholder. </div>
-      <div class="button"> Main menu </div>
+      <a class="button" href="../index.html"> Main menu </a>
     </div>
+    <script src="travels.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGB0pnDqUI6ylxSnxtjDqZlgX0two4pWY&callback=initMap">
+    </script>
   </body>
 </html>

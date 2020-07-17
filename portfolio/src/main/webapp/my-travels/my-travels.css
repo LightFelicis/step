@@ -14,6 +14,7 @@
   min-width: 300px;
 }
 
+.with-frame >
 img {
   background-color: #f4afb4;
   border-radius: 10%;
@@ -23,6 +24,7 @@ img {
 }
 
 @media (max-width:1000px) {
+  .with-frame >
   img {
     border-radius: 10%;
     padding: 2px;
@@ -35,7 +37,7 @@ img {
 #travel-description-box {
   height: 60%;
   max-width: 40%;
-  min-width: 300px;
+  min-width: 500px;
   left: 60%;
   position: absolute;
   top: 20%;
@@ -43,11 +45,12 @@ img {
 
 #map {
   background-color: #976a6d;
-  height: 50%;
+  height: 60%;
   margin: 0 0 5px 0;
 }
 
 #comment {
-  background-color: #888484;
-  height: 50%;
+  background-color: #976a6d;
+  border-radius: 10%;
+  height: 40%;
 }
