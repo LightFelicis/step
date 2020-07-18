@@ -9,10 +9,10 @@ const placesCoords = {
                    }
 
 function setLocation(location) {
-  let coords = placesCoords[location];
-  let map = new google.maps.Map(
+  const coords = placesCoords[location];
+  const map = new google.maps.Map(
       document.getElementById('map'), {zoom: 10, center: coords});
-  let marker = new google.maps.Marker({position: coords, map: map});
+  const marker = new google.maps.Marker({position: coords, map: map});
 }
 
 // Initialize and add the map to page.
@@ -21,7 +21,7 @@ function initMap() {
 }
 
 Object.keys(placesCoords).forEach((place, _) => {
-  let element = document.getElementById(place);
+  const element = document.getElementById(place);
   if (element != null) {
     element.addEventListener("click",
     () => { setLocation(place); });
