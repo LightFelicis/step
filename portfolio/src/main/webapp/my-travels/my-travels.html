@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="../default.css">
+    <link rel="stylesheet" href="../buttons.css">
+    <link rel="stylesheet" href="my-travels.css">
+  </head>
+  <body>
+    <div class="with-frame" id="travel-photos-box">
+      <img id="matterhorn" src="images/matterhorn.jpg" alt="Matterhorn mountain">
+      <img id="zurich" src="images/zurich.jpg" alt="Uetliberg mountain">
+      <img id="krakow" src="images/krakow.jpg" alt="Sukiennice in Kraków">
+      <img id="disneyland" src="images/disneyland.jpg" alt="Disneyland Paris">
+      <img id="kolobrzeg" src="images/kolobrzeg.jpg" alt="Kołobrzeg beach">
+      <img id="berlin" src="images/berlin.jpg" alt="Alexanderplatz in Berlin">
+    </div>
+    <div id="travel-description-box">
+      <div id="map"> Map placeholder. </div>
+      <div id="comment"> Click a photo to see where it was taken! </div>
+      <a class="button" href="../index.html"> Main menu </a>
+    </div>
+    <script src="travels.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWpR_Ngr2tQ35pwUIajNkDTyAWD2gr1Y8&callback=initMap">
+    </script>
+  </body>
+</html>
