@@ -9,7 +9,7 @@
   font-family: 'Cookie', cursive;
   height: 50px;
   justify-content: center;
-  margin: 5px;
+  margin: 5px 0 5px 0;
   position: relative;
   -webkit-tap-highlight-color: #f4afb4;
   text-decoration: none;

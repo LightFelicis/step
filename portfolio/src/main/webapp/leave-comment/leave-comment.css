@@ -1,0 +1,53 @@
+/* Leave a comment form rules. */
+
+#leave-comment-form {
+  min-width: 300px;
+  max-width: 30%;
+  left: 20%;
+  position: fixed;
+  top: 30%;
+}
+
+form {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+form >
+* {
+  background: #eee;
+  border: 0;
+  border-bottom: 2px solid #f4afb4;
+  border-radius: 8px 8px 0 0;
+  font-family: 'Montserrat';
+  margin-top: 5px;
+  overflow: hidden;
+  padding: 5px;
+  position: relative;
+  width: 100%;
+}
+
+::-webkit-input-placeholder {
+  color: #f4afb4;
+}
+
+textarea {
+  height: 100px;
+}
+
+/* Comments list rules. */
+
+#sidebar {
+  height: 75%;
+  min-width: 300px;
+  max-width: 30%;
+  left: 60%;
+  position: fixed;
+  top: 12.5%;
+}
+
+#comment-list {
+  background: #f4afb4;
+  height: 80%;
+}
