@@ -14,34 +14,49 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/** Servlet that returns some example content. **/
+/** Servlet that returns comments stored in database. **/
 @WebServlet("/get-comments")
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
-    Comment comment1 = new Comment("author 1", "comment placeholder 1");
-    Comment comment2 = new Comment("author 2", "<script>alert(\"malicious code check!\");</script>");
-    List<Comment> comments = new ArrayList<>();
-    comments.add(comment1);
-    comments.add(comment2);
-    CommentList commentList = new CommentList(comments);
-    Gson gson = new Gson();    
-    String commentsJSON = gson.toJson(commentList);
+    CommentList comments = new CommentList(prepareComments());
 
+    Gson gson = new Gson();
+    String commentsJSON = gson.toJson(comments);
     response.getWriter().println(commentsJSON);
+  }
+
+  private List<Comment> prepareComments() {
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    List<Comment> comments = new ArrayList<>();
+
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String authorEmail = (String) entity.getProperty("email");
+      String content = (String) entity.getProperty("content");
+      Comment comment = new Comment(authorEmail, content);
+      comments.add(comment);
+    }
+    return comments;
   }
 }
 

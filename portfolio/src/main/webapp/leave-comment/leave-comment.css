@@ -54,7 +54,7 @@ textarea {
 #comment-list >
 .comment {
   background: #f4afb4;
-  height: 20%;
+  max-height: 20%;
   margin: 0 0 2px 0px;
 }
 
@@ -70,8 +70,9 @@ textarea {
   padding: 1px;
   float: right;
   font-family: 'Montserrat';
+  font-size: small;
   background: transparent;
-  color: white;
+  color: #2f4858;
   margin: 0;
   position: relative;
 }
