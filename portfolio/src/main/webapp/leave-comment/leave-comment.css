@@ -1,5 +1,3 @@
-/* Leave a comment form rules. */
-
 #leave-comment-form {
   min-width: 300px;
   max-width: 30%;
@@ -48,6 +46,32 @@ textarea {
 }
 
 #comment-list {
-  background: #f4afb4;
+  background: transparent;
   height: 80%;
+  width: 100%;
+}
+
+#comment-list >
+.comment {
+  background: #f4afb4;
+  height: 20%;
+  margin: 0 0 2px 0px;
+}
+
+.comment-content {
+  padding: 2px;
+  position: relative;
+  font-family: 'Montserrat';
+  color: white;
+  width: 100%;
+}
+
+.comment-author {
+  padding: 1px;
+  float: right;
+  font-family: 'Montserrat';
+  background: transparent;
+  color: white;
+  margin: 0;
+  position: relative;
 }
