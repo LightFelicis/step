@@ -18,11 +18,11 @@ function handleResponse(response) {
 
 function addCommentToHTML(commentJSON) {
   $('#comment-list')
-  .append($('<div class="comment-content"></div>').text(commentJSON.content))
-  .append($('<div class="comment-author"></div>').text(commentJSON.author));
+  .append($('<div class="comment-author"></div>').text(commentJSON.author))
+  .append($('<div class="comment-content"></div>').text(commentJSON.content));
 
-  $('#comment-list > .comment-content').each(function(){
-    $(this).next('.comment-author').andSelf().wrapAll('<div class="comment"></div>');
+  $('#comment-list > .comment-author').each(function(){
+    $(this).next('.comment-content').andSelf().wrapAll('<div class="comment"></div>');
   });
 }
 
