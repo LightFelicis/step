@@ -54,25 +54,25 @@ textarea {
 #comment-list >
 .comment {
   background: #f4afb4;
-  max-height: 20%;
   margin: 0 0 2px 0px;
+  max-height: 20%;
 }
 
 .comment-content {
+  color: white;
+  font-family: 'Montserrat';
   padding: 2px;
   position: relative;
-  font-family: 'Montserrat';
-  color: white;
   width: 100%;
 }
 
 .comment-author {
-  padding: 1px;
+  background: transparent;
+  color: #2f4858;
   float: right;
   font-family: 'Montserrat';
   font-size: small;
-  background: transparent;
-  color: #2f4858;
   margin: 0;
+  padding: 1px;
   position: relative;
 }
