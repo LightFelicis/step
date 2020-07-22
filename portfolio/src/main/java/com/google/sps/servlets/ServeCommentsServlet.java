@@ -31,14 +31,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns comments stored in database. **/
 @WebServlet("/get-comments")
-public class DataServlet extends HttpServlet {
+public class ServeCommentsServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
-    CommentList comments = new CommentList(prepareComments());
-
     Gson gson = new Gson();
+
+    CommentList comments = new CommentList(prepareComments());
     String commentsJSON = gson.toJson(comments);
     response.getWriter().println(commentsJSON);
   }
@@ -47,15 +47,15 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    List<Comment> comments = new ArrayList<>();
 
+    List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
       String authorEmail = (String) entity.getProperty("email");
       String content = (String) entity.getProperty("content");
       Comment comment = new Comment(authorEmail, content);
       comments.add(comment);
     }
+
     return comments;
   }
 }
@@ -63,20 +63,29 @@ public class DataServlet extends HttpServlet {
 class Comment {
   private String author;
   private String content;
+
   public Comment(String author, String content) {
     this.author = author;
     this.content = content;
   }
 
-  public String getAuthor() { return author; };
-  public String getContent() { return content; };
+  public String getAuthor() {
+    return author;
+  };
+
+  public String getContent() {
+    return content;
+  };
 }
 
 class CommentList {
   private List<Comment> comments;
+
   public CommentList(List<Comment> comments) {
     this.comments = new ArrayList(comments);
   }
 
-  public List<Comment> getComments() { return new ArrayList(comments); }
+  public List<Comment> getComments() {
+    return new ArrayList(comments);
+  }
 }
