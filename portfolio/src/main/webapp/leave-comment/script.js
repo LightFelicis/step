@@ -1,37 +1,22 @@
 function getComments() {
-  console.log("Downloading comments.");
-  const responsePromise = fetch("/get-comments");
-  responsePromise.then(handleResponse);
-}
-
-function handleResponse(response) {
-  console.log('Handling the response.');
-
-  // response.text() returns a Promise, because the response is a stream of
-  // content and not a simple variable.
-  const textPromise = response.text();
-  const JSONPromise = textPromise.then(JSON.parse);
-  // When the response is converted to text, pass the result into the
-  // addCommentsToDom() function.
-  JSONPromise.then(addCommentsToDom);
-}
-
-function addCommentToHTML(commentJSON) {
-  $('#comment-list')
-  .append($('<div class="comment-author"></div>').text(commentJSON.author))
-  .append($('<div class="comment-content"></div>').text(commentJSON.content));
-
-  $('#comment-list > .comment-author').each(function(){
-    $(this).next('.comment-content').andSelf().wrapAll('<div class="comment"></div>');
-  });
+  fetch("../get-comments").
+  then(response => response.text()).
+  then(JSON.parse).
+  then(addCommentsToDom);
 }
 
 // Given JSON with multiple comments, modifies HTML code.
 function addCommentsToDom(comments) {
-  for (let comment of comments.comments) {
-    console.log(`${comment.author}`);
-    addCommentToHTML(comment);
-  }
+  let commentSections = $();
+  $.each(comments.comments, ((index, commentJSON) => {
+    commentSections = commentSections.add(
+        $('<section class="comment">')
+            .append($('<section class="comment-author">')
+                .text(commentJSON.author))
+            .append($('<section class="comment-content">')
+                .text(commentJSON.content)));
+  }));
+  $('#comment-list').append(commentSections);
 }
 
 getComments();
