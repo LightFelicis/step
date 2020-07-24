@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>My Portfolio</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
+    <script src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../default.css">
+    <link rel="stylesheet" href="../buttons.css">
+    <link rel="stylesheet" href="leave-comment.css">
+  </head>
+  <body>
+    <div id="leave-comment-form">
+      Please share your feedback!
+      <form method="post" action="../comments">
+        <input name="email" type="email" placeholder="Your email adress">
+        <textarea name="content" wrap="soft" placeholder="Your comment"></textarea>
+        <input class="button" type="submit" placeholder="Submit!">
+      </form>
+    </div>
+    <div id="sidebar">
+      <div id="comment-list">
+        Comments:
+      </div>
+      <a class="button" href="../">Main page</a>
+    </div>
+  </body>
+</html>
