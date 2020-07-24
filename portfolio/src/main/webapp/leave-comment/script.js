@@ -1,5 +1,5 @@
 function getComments() {
-  fetch("../get-comments").
+  fetch("../comments").
   then(response => response.text()).
   then(JSON.parse).
   then(addCommentsToDom);
@@ -8,7 +8,7 @@ function getComments() {
 // Given JSON with multiple comments, modifies HTML code.
 function addCommentsToDom(comments) {
   let commentSections = $();
-  $.each(comments.comments, ((index, commentJSON) => {
+  $.each(comments, ((index, commentJSON) => {
     commentSections = commentSections.add(
         $('<section class="comment">')
             .append($('<section class="comment-author">')
