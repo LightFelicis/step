@@ -48,6 +48,7 @@ textarea {
 #comment-list {
   background: transparent;
   height: 80%;
+  overflow-x: scroll;
   width: 100%;
 }
 

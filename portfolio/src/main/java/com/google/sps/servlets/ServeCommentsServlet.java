@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns comments stored in database. **/
-@WebServlet("/get-comments")
+@WebServlet("/comments")
 public class ServeCommentsServlet extends HttpServlet {
 
   @Override
@@ -38,9 +38,26 @@ public class ServeCommentsServlet extends HttpServlet {
     response.setContentType("application/json");
     Gson gson = new Gson();
 
-    CommentList comments = new CommentList(prepareComments());
+    List<Comment> comments = prepareComments();
     String commentsJSON = gson.toJson(comments);
     response.getWriter().println(commentsJSON);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String email = request.getParameter("email");
+    String content = request.getParameter("content");
+    long timestamp = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("email", email);
+    commentEntity.setProperty("content", content);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    response.sendRedirect("/leave-comment/leave-comment.html");
   }
 
   private List<Comment> prepareComments() {
@@ -76,16 +93,4 @@ class Comment {
   public String getContent() {
     return content;
   };
-}
-
-class CommentList {
-  private List<Comment> comments;
-
-  public CommentList(List<Comment> comments) {
-    this.comments = new ArrayList(comments);
-  }
-
-  public List<Comment> getComments() {
-    return new ArrayList(comments);
-  }
 }
