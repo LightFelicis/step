@@ -14,6 +14,13 @@
 
 package com.google.sps.servlets;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.JsonFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -23,7 +30,9 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.security.GeneralSecurityException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns comments stored in database. **/
 @WebServlet("/comments")
 public class ServeCommentsServlet extends HttpServlet {
+  private static final String CLIENT_ID = "810678295196-nls1qkpmf8pju0gu9bjb6j4bdkqkbfdu.apps.googleusercontent.com";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,19 +55,50 @@ public class ServeCommentsServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String email = request.getParameter("email");
     String content = request.getParameter("content");
-    long timestamp = System.currentTimeMillis();
+    GoogleIdToken idToken = validateUserIdToken(request.getParameter("userTokenId"));
+    
+    if (idToken != null) {
+      System.out.println("Token ID is valid.");
+      addCommentToDb(idToken, content);
+    } else {
+      System.out.println("Invalid ID token.");
+    }
 
+    response.sendRedirect("/leave-comment/leave-comment.html");
+  }
+
+  private void addCommentToDb(GoogleIdToken idToken, String content) {
+    String email = idToken.getPayload().getEmail();
+    long timestamp = System.currentTimeMillis();
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("email", email);
     commentEntity.setProperty("content", content);
     commentEntity.setProperty("timestamp", timestamp);
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
+  }
 
-    response.sendRedirect("/leave-comment/leave-comment.html");
+  private GoogleIdToken validateUserIdToken(String idTokenString) {
+    GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+        new NetHttpTransport(),
+        JacksonFactory.getDefaultInstance())
+    .setAudience(Collections.singletonList(CLIENT_ID))
+    .build();
+
+    try {
+      return verifier.verify(idTokenString);
+    } catch (GeneralSecurityException e) {
+      System.out.println(e);
+      return null;
+    } catch (IOException e) {
+      System.out.println(e);
+      return null;
+    } catch (java.lang.NullPointerException e) {
+      System.out.println(e);
+      return null;
+    }
+
   }
 
   private List<Comment> prepareComments() {

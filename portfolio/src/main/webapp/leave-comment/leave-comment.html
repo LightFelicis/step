@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="810678295196-nls1qkpmf8pju0gu9bjb6j4bdkqkbfdu.apps.googleusercontent.com">
     <title>My Portfolio</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="script.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -12,17 +14,17 @@
     <link rel="stylesheet" href="leave-comment.css">
   </head>
   <body>
-    <div id="leave-comment-form">
+    <div id="leave-comment">
       Please share your feedback!
-      <form method="post" action="../comments">
-        <input name="email" type="email" placeholder="Your email adress">
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      <form id="leave-comment-form" method="post" action="../comments" type="hidden">
         <textarea name="content" wrap="soft" placeholder="Your comment"></textarea>
         <input class="button" type="submit" placeholder="Submit!">
       </form>
     </div>
     <div id="sidebar">
+      Comments:
       <div id="comment-list">
-        Comments:
       </div>
       <a class="button" href="../">Main page</a>
     </div>
