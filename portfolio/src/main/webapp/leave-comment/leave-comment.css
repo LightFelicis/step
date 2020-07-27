@@ -6,6 +6,11 @@
   top: 30%;
 }
 
+.g-signin2 {
+  left: 30%;
+  width: 40%;
+}
+
 #leave-comment-form {
   visibility: hidden;
 }
