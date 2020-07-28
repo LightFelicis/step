@@ -42,9 +42,7 @@ function setLocation(location) {
     content: description
   });
   const marker = new google.maps.Marker({position: coords, map: map, title: location});
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });
+  infowindow.open(map, marker);
 }
 
 // Initialize and add the map to page.
