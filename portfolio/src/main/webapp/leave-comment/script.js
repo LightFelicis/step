@@ -2,7 +2,7 @@ function onSignIn(googleUser) {
   if ($('#sign-out').length != 0) {
     return;
   }
-
+  
   let loggedUser = googleUser.getAuthResponse().id_token;
   $('<input />').attr('type', 'hidden')
     .attr('name', 'userTokenId')
