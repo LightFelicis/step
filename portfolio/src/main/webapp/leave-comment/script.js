@@ -17,7 +17,7 @@ function onSignIn(googleUser) {
       );
 
   $('#leave-comment-form')
-    .css('visibility', 'visible');
+      .css('visibility', 'visible');
 }
 
 
@@ -28,11 +28,11 @@ function addUserTokenIdToForm(userTokenId) {
   }
 
   $('<input />')
-    .attr('type', 'hidden')
-    .attr('name', 'userTokenId')
-    .val(userTokenId)
-    .attr('id', 'userTokenId')
-    .appendTo('#leave-comment-form');
+      .attr('type', 'hidden')
+      .attr('name', 'userTokenId')
+      .val(userTokenId)
+      .attr('id', 'userTokenId')
+      .appendTo('#leave-comment-form');
 }
 
 function signOut() {
@@ -42,15 +42,15 @@ function signOut() {
   });
   $("#sign-out").remove();
   $('#leave-comment-form')
-    .css('visibility', 'hidden');
+      .css('visibility', 'hidden');
   $("#userTokenId").val('');
 }
 
 function getComments() {
   fetch("../comments")
-    .then(response => response.text())
-    .then(JSON.parse)
-    .then(addCommentsToDom);
+      .then(response => response.text())
+      .then(JSON.parse)
+      .then(addCommentsToDom);
 }
 
 // Given JSON with multiple comments, modifies HTML code.
