@@ -76,7 +76,7 @@ public class ServeCommentsServlet extends HttpServlet {
       response.sendRedirect("/leave-comment/leave-comment.html");
     } catch (GeneralSecurityException e) {
       System.out.println("Token ID was not valid.");
-      response.sendRedirect("/");
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
     }
   }
 
@@ -99,8 +99,19 @@ public class ServeCommentsServlet extends HttpServlet {
     datastore.put(commentEntity);
   }
 
-  private GoogleIdToken validateUserIdToken(String idTokenString) throws GeneralSecurityException, IOException {
-    return verifier.verify(idTokenString);
+  private GoogleIdToken validateUserIdToken(String idTokenString) throws GeneralSecurityException {
+    GoogleIdToken idToken;
+    try {
+      idToken = verifier.verify(idTokenString);
+    } catch (IOException e) {
+      throw new GeneralSecurityException("User token ID is not valid");
+    }
+
+    if (idToken == null) {
+      throw new GeneralSecurityException("User token ID is not valid");
+    }
+
+    return idToken;
   }
 
   private List<Comment> prepareComments() {
