@@ -3,15 +3,14 @@
   max-width: 30%;
   left: 20%;
   position: fixed;
-  top: 30%;
+  top: 20%;
 }
 
-.g-signin2 {
-  left: 30%;
-  width: 40%;
+#greeting {
+  margin-down: 10px;
 }
 
-#leave-comment-form {
+#show-on-sign-in {
   visibility: hidden;
 }
 

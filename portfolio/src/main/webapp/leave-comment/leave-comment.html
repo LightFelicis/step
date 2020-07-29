@@ -15,12 +15,18 @@
   </head>
   <body>
     <section id="leave-comment">
-      Please log in to share your feedback!
-      <section class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></section>
-      <form id="leave-comment-form" method="post" action="../comments" type="hidden">
-        <textarea name="content" required pattern=".*\S+.*" wrap="soft" placeholder="Your comment"></textarea>
-        <input class="button" type="submit" placeholder="Submit!">
-      </form>
+      <span id="greeting">
+        Please log in to share your feedback!
+      </span>
+      <section class="g-signin2" data-onsuccess="onSignIn"></section>
+      <section id="show-on-sign-in">
+        <form id="leave-comment-form" method="post" action="../comments">
+          <textarea name="content" required wrap="soft" placeholder="Your comment"></textarea>
+          <input id="userTokenId" name="userTokenId" value="" type="hidden">
+          <input class="button" type="submit" placeholder="Submit!">
+        </form>
+        <a id="sign-out" class="button" href="leave-comment.html" onclick="signOut();">Sign out</a>
+      </section>
     </section>
     <section id="sidebar">
       Comments:

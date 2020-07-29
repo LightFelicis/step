@@ -1,38 +1,8 @@
 function onSignIn(googleUser) {
-  if ($('#sign-out').length != 0) {
-    return;
-  }
-
-  let loggedUser = googleUser.getAuthResponse().id_token;
-  addUserTokenIdToForm(loggedUser);
-
-  $('#leave-comment')
-      .append(
-          $('<a></a>')
-              .attr('id', 'sign-out')
-              .attr('href', '#')
-              .click(signOut)
-              .addClass('button')
-              .text("Sign out")
-      );
-
-  $('#leave-comment-form')
+  $('#userTokenId').val(googleUser.getAuthResponse().id_token);
+  $('#show-on-sign-in')
       .css('visibility', 'visible');
-}
-
-
-function addUserTokenIdToForm(userTokenId) {
-  if ($('#userTokenId').length != 0) {
-    $('#userTokenId').val(userTokenId);
-    return;
-  }
-
-  $('<input />')
-      .attr('type', 'hidden')
-      .attr('name', 'userTokenId')
-      .val(userTokenId)
-      .attr('id', 'userTokenId')
-      .appendTo('#leave-comment-form');
+  $('#greeting').text('Welcome, ' + googleUser.getBasicProfile().getName() + '!');
 }
 
 function signOut() {
@@ -40,8 +10,7 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
-  $("#sign-out").remove();
-  $('#leave-comment-form')
+  $('#show-on-sign-in')
       .css('visibility', 'hidden');
   $("#userTokenId").val('');
 }
