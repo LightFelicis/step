@@ -29,10 +29,13 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.security.GeneralSecurityException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServeCommentsServlet extends HttpServlet {
   private static final String CLIENT_ID = "810678295196-nls1qkpmf8pju0gu9bjb6j4bdkqkbfdu.apps.googleusercontent.com";
   private GoogleIdTokenVerifier verifier;
+  private static final Logger log = Logger.getLogger(ServeCommentsServlet.class.getName());
   
   @Override
   public void init() {
@@ -73,6 +77,10 @@ public class ServeCommentsServlet extends HttpServlet {
       addCommentToDb(idToken, content);
       response.sendRedirect("/leave-comment/leave-comment.html");
     } catch (GeneralSecurityException e) {
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      e.printStackTrace(pw);
+      log.info(sw.toString());
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
     }
   }
@@ -102,7 +110,7 @@ public class ServeCommentsServlet extends HttpServlet {
     try {
       idToken = verifier.verify(idTokenString);
     } catch (IOException e) {
-      throw new GeneralSecurityException("User token ID is not valid");
+      throw new GeneralSecurityException("User token ID is not valid", e);
     }
 
     if (idToken == null) {
