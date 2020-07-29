@@ -4,20 +4,35 @@ function onSignIn(googleUser) {
   }
 
   let loggedUser = googleUser.getAuthResponse().id_token;
-  $('<input />').attr('type', 'hidden')
-    .attr('name', 'userTokenId')
-    .attr('value', loggedUser)
-    .appendTo('#leave-comment-form');
+  addUserTokenIdToForm(loggedUser);
 
   $('#leave-comment')
-      .append($('<a></a>')
-          .attr('id', 'sign-out')
-          .attr('href', '#')
-          .attr('onclick', 'signOut();')
-          .addClass('button')
-          .text("Sign out")
+      .append(
+          $('<a></a>')
+              .attr('id', 'sign-out')
+              .attr('href', '#')
+              .click(signOut)
+              .addClass('button')
+              .text("Sign out")
       );
-  document.getElementById("leave-comment-form").style.visibility = 'visible';
+
+  $('#leave-comment-form')
+    .css('visibility', 'visible');
+}
+
+
+function addUserTokenIdToForm(userTokenId) {
+  if ($('#userTokenId').length != 0) {
+    $('#userTokenId').val(userTokenId);
+    return;
+  }
+
+  $('<input />')
+    .attr('type', 'hidden')
+    .attr('name', 'userTokenId')
+    .val(userTokenId)
+    .attr('id', 'userTokenId')
+    .appendTo('#leave-comment-form');
 }
 
 function signOut() {
@@ -25,9 +40,10 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
-  $("[name=userTokenId]").remove();
   $("#sign-out").remove();
-  document.getElementById("leave-comment-form").style.visibility = 'hidden';
+  $('#leave-comment-form')
+    .css('visibility', 'hidden');
+  $("#userTokenId").val('');
 }
 
 function getComments() {

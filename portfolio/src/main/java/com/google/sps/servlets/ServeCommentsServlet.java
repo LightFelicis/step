@@ -29,6 +29,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,16 +57,25 @@ public class ServeCommentsServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String content = request.getParameter("content");
-    GoogleIdToken idToken = validateUserIdToken(request.getParameter("userTokenId"));
-    
-    if (idToken != null) {
+    String userTokenId = extractUserTokenId(request);
+
+    try {
+      GoogleIdToken idToken = validateUserIdToken(userTokenId);
       System.out.println("Token ID is valid.");
       addCommentToDb(idToken, content);
-    } else {
-      System.out.println("Invalid ID token.");
+      response.sendRedirect("/leave-comment/leave-comment.html");
+    } catch (GeneralSecurityException e) {
+      System.out.println("Token ID was not valid.");
+      response.sendRedirect("/");
     }
+  }
 
-    response.sendRedirect("/leave-comment/leave-comment.html");
+  private static String extractUserTokenId(HttpServletRequest request) {
+    String userTokenId = request.getParameter("userTokenId");
+    if (userTokenId == null) {
+      throw new IllegalArgumentException("User token ID is empty.");
+    }
+    return userTokenId;
   }
 
   private void addCommentToDb(GoogleIdToken idToken, String content) {
@@ -79,26 +89,13 @@ public class ServeCommentsServlet extends HttpServlet {
     datastore.put(commentEntity);
   }
 
-  private GoogleIdToken validateUserIdToken(String idTokenString) {
+  private GoogleIdToken validateUserIdToken(String idTokenString) throws GeneralSecurityException, IOException {
     GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
         new NetHttpTransport(),
         JacksonFactory.getDefaultInstance())
-    .setAudience(Collections.singletonList(CLIENT_ID))
-    .build();
-
-    try {
-      return verifier.verify(idTokenString);
-    } catch (GeneralSecurityException e) {
-      System.out.println(e);
-      return null;
-    } catch (IOException e) {
-      System.out.println(e);
-      return null;
-    } catch (java.lang.NullPointerException e) {
-      System.out.println(e);
-      return null;
-    }
-
+        .setAudience(Collections.singletonList(CLIENT_ID))
+        .build();
+    return verifier.verify(idTokenString);
   }
 
   private List<Comment> prepareComments() {
