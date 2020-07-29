@@ -66,26 +66,24 @@ public class ServeCommentsServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String content = request.getParameter("content");
-    String userTokenId = extractUserTokenId(request);
-
     try {
+      String content = extractParameter(request, "content");
+      String userTokenId = extractParameter(request, "userTokenId");
       GoogleIdToken idToken = validateUserIdToken(userTokenId);
-      System.out.println("Token ID is valid.");
       addCommentToDb(idToken, content);
       response.sendRedirect("/leave-comment/leave-comment.html");
     } catch (GeneralSecurityException e) {
-      System.out.println("Token ID was not valid.");
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
     }
   }
 
-  private static String extractUserTokenId(HttpServletRequest request) {
-    String userTokenId = request.getParameter("userTokenId");
-    if (userTokenId == null) {
-      throw new IllegalArgumentException("User token ID is empty.");
+  private static String extractParameter(HttpServletRequest request, String parameterName)
+      throws GeneralSecurityException {
+    String parameter = request.getParameter(parameterName);
+    if (parameter.isEmpty()) {
+      throw new GeneralSecurityException(parameterName + " is empty.");
     }
-    return userTokenId;
+    return parameter;
   }
 
   private void addCommentToDb(GoogleIdToken idToken, String content) {

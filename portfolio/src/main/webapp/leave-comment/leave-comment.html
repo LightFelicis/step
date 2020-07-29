@@ -18,7 +18,7 @@
       Please log in to share your feedback!
       <section class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></section>
       <form id="leave-comment-form" method="post" action="../comments" type="hidden">
-        <textarea name="content" wrap="soft" placeholder="Your comment"></textarea>
+        <textarea name="content" required pattern=".*\S+.*" wrap="soft" placeholder="Your comment"></textarea>
         <input class="button" type="submit" placeholder="Submit!">
       </form>
     </section>
