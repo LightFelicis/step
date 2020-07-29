@@ -43,6 +43,16 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class ServeCommentsServlet extends HttpServlet {
   private static final String CLIENT_ID = "810678295196-nls1qkpmf8pju0gu9bjb6j4bdkqkbfdu.apps.googleusercontent.com";
+  private GoogleIdTokenVerifier verifier;
+  
+  @Override
+  public void init() {
+    verifier = new GoogleIdTokenVerifier.Builder(
+        new NetHttpTransport(),
+        JacksonFactory.getDefaultInstance())
+        .setAudience(Collections.singletonList(CLIENT_ID))
+        .build();
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -90,11 +100,6 @@ public class ServeCommentsServlet extends HttpServlet {
   }
 
   private GoogleIdToken validateUserIdToken(String idTokenString) throws GeneralSecurityException, IOException {
-    GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
-        new NetHttpTransport(),
-        JacksonFactory.getDefaultInstance())
-        .setAudience(Collections.singletonList(CLIENT_ID))
-        .build();
     return verifier.verify(idTokenString);
   }
 
