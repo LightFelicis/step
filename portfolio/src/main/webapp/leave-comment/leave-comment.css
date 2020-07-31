@@ -1,9 +1,17 @@
-#leave-comment-form {
+#leave-comment {
   min-width: 300px;
   max-width: 30%;
   left: 20%;
   position: fixed;
-  top: 30%;
+  top: 20%;
+}
+
+#greeting {
+  margin-down: 10px;
+}
+
+#show-on-sign-in {
+  visibility: hidden;
 }
 
 form {
@@ -56,7 +64,6 @@ textarea {
 .comment {
   background: #f4afb4;
   margin: 0 0 2px 0px;
-  max-height: 20%;
 }
 
 .comment-content {
@@ -64,7 +71,7 @@ textarea {
   font-family: 'Montserrat';
   padding: 2px;
   position: relative;
-  width: 100%;
+  word-wrap : break-word;
 }
 
 .comment-author {
@@ -76,4 +83,8 @@ textarea {
   margin: 0;
   padding: 1px;
   position: relative;
+}
+
+.comment-end {
+  clear: both;
 }

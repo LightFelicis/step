@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="google-signin-client_id" content="810678295196-nls1qkpmf8pju0gu9bjb6j4bdkqkbfdu.apps.googleusercontent.com">
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
-    <script src="script.js" defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="script.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../default.css">
@@ -12,19 +15,25 @@
     <link rel="stylesheet" href="leave-comment.css">
   </head>
   <body>
-    <div id="leave-comment-form">
-      Please share your feedback!
-      <form method="post" action="../comments">
-        <input name="email" type="email" placeholder="Your email adress">
-        <textarea name="content" wrap="soft" placeholder="Your comment"></textarea>
-        <input class="button" type="submit" placeholder="Submit!">
-      </form>
-    </div>
-    <div id="sidebar">
-      <div id="comment-list">
-        Comments:
-      </div>
+    <section id="leave-comment">
+      <span id="greeting">
+        Please log in to share your feedback!
+      </span>
+      <div class="g-signin2"></div>
+      <section id="show-on-sign-in">
+        <form id="leave-comment-form" method="post" action="../comments">
+          <textarea name="content" required wrap="soft" placeholder="Your comment"></textarea>
+          <input id="userTokenId" name="userTokenId" value="" type="hidden">
+          <input class="button" type="submit" placeholder="Submit!">
+        </form>
+        <a id="sign-out" class="button" onclick="signOut();">Sign out</a>
+      </section>
+    </section>
+    <section id="sidebar">
+      Comments:
+      <section id="comment-list">
+      </section>
       <a class="button" href="../">Main page</a>
-    </div>
+    </section>
   </body>
 </html>
