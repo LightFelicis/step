@@ -7,9 +7,7 @@ function init() {
 
 var initSignin = function() {
   auth2 = gapi.auth2.getAuthInstance();
-
-  // Setting up the listeners.
-  auth2.isSignedIn.listen(signinChanged);
+  auth2.attachClickHandler($('.g-signin2')[0], {prompt: "select_account"});
   auth2.currentUser.listen(userChanged);
 
   if (auth2.isSignedIn.get() == true) {
@@ -17,8 +15,13 @@ var initSignin = function() {
   }
 };
 
-function signinChanged(isSignedIn) {
-  if (isSignedIn) {
+function signOut() {
+  auth2.signOut();
+}
+
+function userChanged(user) {
+  googleUser = user;
+  if (googleUser.isSignedIn()) {
     $('#userTokenId').val(googleUser.getAuthResponse().id_token);
     $('#show-on-sign-in').css('visibility', 'visible');
     $('#greeting').text('Welcome, ' + googleUser.getBasicProfile().getName() + '!');
@@ -26,17 +29,6 @@ function signinChanged(isSignedIn) {
     $("#userTokenId").val('');
     $('#show-on-sign-in').css('visibility', 'hidden');
     $('#greeting').text('Please log in to share your feedback!');
-  }
-}
-
-function signOut() {
-  auth2.signOut();
-}
-
-function userChanged(user) {
-  googleUser = user;
-  if (googleUser.getBasicProfile()) {
-    $('#greeting').text('Welcome, ' + googleUser.getBasicProfile().getName() + '!');
   }
 };
 
