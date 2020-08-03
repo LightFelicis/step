@@ -14,10 +14,55 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    final List<Event> preparedEvents = prepareEvents(events, request);
+    List<TimeRange> queryResult = new ArrayList<>();
+    int currentTime = 0;
+
+    for (Event event : preparedEvents) {
+      if (currentTime + request.getDuration() <= event.getWhen().start()) {
+        int end = (int) Math.max(event.getWhen().start(), currentTime + request.getDuration());
+        queryResult.add(TimeRange.fromStartEnd(currentTime, end, false));
+      }
+      currentTime = Math.max(currentTime, event.getWhen().end());
+    }
+
+    if (currentTime + request.getDuration() <= TimeRange.END_OF_DAY) {
+      queryResult.add(TimeRange.fromStartEnd(currentTime, TimeRange.END_OF_DAY, true));
+    }
+
+    return queryResult;
+  }
+
+  private List<Event> prepareEvents(Collection<Event> events, MeetingRequest request) {
+    List<Event> prepared = filterIrrelevantEvents(events, request);
+    sortEvents(prepared);
+    return prepared;
+  }
+
+  private List<Event> filterIrrelevantEvents(Collection<Event> events, MeetingRequest request) {
+    return events.stream()
+        .filter(event -> {
+          Collection<String> eventCopy = new HashSet<>(event.getAttendees());
+          eventCopy.retainAll(request.getAttendees());
+          return !eventCopy.isEmpty();
+        })
+        .collect(Collectors.toList());
+  }
+
+  private void sortEvents(List<Event> events) {
+    events.sort((Event e1, Event e2) -> {
+      if (e1.getWhen().start() == e2.getWhen().start()) {
+        return Integer.compare(e1.hashCode(), e2.hashCode());
+      }
+      return Integer.compare(e1.getWhen().start(), e2.getWhen().start());
+    });
   }
 }
