@@ -88,13 +88,15 @@ public final class FindMeetingQuery {
     return prepared;
   }
 
-  private List<Event> filterIrrelevantEvents(Collection<Event> events, Collection<String> requestAttendees) {
+  private List<Event> filterIrrelevantEvents(Collection<Event> events,
+                                             Collection<String> requestAttendees) {
     return events.stream()
-        .filter(event -> {
-          Collection<String> eventCopy = new HashSet<>(event.getAttendees());
-          eventCopy.retainAll(requestAttendees);
-          return !eventCopy.isEmpty();
-        })
+        .filter(
+            event -> {
+              Collection<String> eventCopy = new HashSet<>(event.getAttendees());
+              eventCopy.retainAll(requestAttendees);
+              return !eventCopy.isEmpty();
+            })
         .collect(Collectors.toList());
   }
 
