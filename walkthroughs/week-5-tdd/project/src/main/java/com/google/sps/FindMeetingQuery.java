@@ -23,51 +23,50 @@ import java.util.stream.Collectors;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> requiredTimeranges = findMeetingTimeranges(events, request.getDuration(),
-        request.getAttendees());
-    List<TimeRange> optionalTimeranges = findMeetingTimeranges(events, request.getDuration(),
-        request.getOptionalAttendees());
-    List<TimeRange> intersection = findTimerangesIntersections(requiredTimeranges,
-        optionalTimeranges, request.getDuration());
+    List<TimeRange> requiredTimeRanges = findTimeSlotsForNewMeeting(
+        filterRelevantEvents(events, request.getAttendees()),
+        request.getDuration());
+    List<TimeRange> optionalTimeRanges = findTimeSlotsForNewMeeting(
+        filterRelevantEvents(events, request.getOptionalAttendees()),
+        request.getDuration());
+    List<TimeRange> intersection = findTimeRangesIntersections(
+        requiredTimeRanges, optionalTimeRanges, request.getDuration());
     if (intersection.isEmpty()) {
-      return requiredTimeranges;
+      return requiredTimeRanges;
     }
     return intersection;
   }
 
-  final List<TimeRange> findTimerangesIntersections(List<TimeRange> required,
-                                                    List<TimeRange> optional,
-                                                    long duration) {
+  private static List<TimeRange> findTimeRangesIntersections(List<TimeRange> required,
+                                                             List<TimeRange> optional,
+                                                             long duration) {
     List<TimeRange> intersection = new ArrayList<>();
     for (TimeRange requiredTimeRange : required) {
       for (TimeRange optionalTimeRange : optional) {
-        Optional<TimeRange> tr = createIntersection(requiredTimeRange, optionalTimeRange);
-        if (tr.isPresent()) {
-          intersection.add(tr.get());
-        }
+        createIntersection(requiredTimeRange, optionalTimeRange)
+            .filter(timeRange -> timeRange.duration() >= duration)
+            .ifPresent(intersection::add);
       }
     }
-    return intersection.stream()
-        .filter(timeRange -> timeRange.duration() >= duration)
-        .collect(Collectors.toList());
+    return intersection;
   }
 
-  private Optional<TimeRange> createIntersection(TimeRange a, TimeRange b) {
-    Optional<TimeRange> result = Optional.empty();
+  private static Optional<TimeRange> createIntersection(TimeRange a, TimeRange b) {
     if (a.overlaps(b)) {
-      TimeRange intersection = TimeRange.fromStartEnd(Math.max(a.start(), b.start()),
-          Math.min(a.end(), b.end()), false);
-      result = Optional.of(intersection);
+      return Optional.of(TimeRange.fromStartEnd(
+          Math.max(a.start(), b.start()),
+          Math.min(a.end(), b.end()),
+          false));
     }
-    return result;
+    return Optional.empty();
   }
 
-  private List<TimeRange> findMeetingTimeranges(Collection<Event> events, long duration,
-                                                Collection<String> attendees) {
-    List<Event> preparedEvents = prepareEvents(events, attendees);
+  private static List<TimeRange> findTimeSlotsForNewMeeting(Collection<Event> events,
+                                                            long duration) {
+    sortEvents((List<Event>) events);
     List<TimeRange> queryResult = new ArrayList<>();
     int currentTime = 0;
-    for (Event event : preparedEvents) {
+    for (Event event : events) {
       if (currentTime + duration <= event.getWhen().start()) {
         int end = (int) Math.max(event.getWhen().start(), currentTime + duration);
         queryResult.add(TimeRange.fromStartEnd(currentTime, end, false));
@@ -82,14 +81,8 @@ public final class FindMeetingQuery {
     return queryResult;
   }
 
-  private List<Event> prepareEvents(Collection<Event> events, Collection<String> attendees) {
-    List<Event> prepared = filterIrrelevantEvents(events, attendees);
-    sortEvents(prepared);
-    return prepared;
-  }
-
-  private List<Event> filterIrrelevantEvents(Collection<Event> events,
-                                             Collection<String> requestAttendees) {
+  private static List<Event> filterRelevantEvents(Collection<Event> events,
+                                                  Collection<String> requestAttendees) {
     return events.stream()
         .filter(
             event -> {
@@ -100,7 +93,7 @@ public final class FindMeetingQuery {
         .collect(Collectors.toList());
   }
 
-  private void sortEvents(List<Event> events) {
+  private static void sortEvents(List<Event> events) {
     events.sort((Event e1, Event e2) -> {
       if (e1.getWhen().start() == e2.getWhen().start()) {
         return Integer.compare(e1.hashCode(), e2.hashCode());
