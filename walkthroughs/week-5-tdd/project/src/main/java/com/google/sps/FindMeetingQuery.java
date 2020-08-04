@@ -16,7 +16,7 @@ package com.google.sps;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,10 +63,10 @@ public final class FindMeetingQuery {
 
   private static List<TimeRange> findTimeSlotsForNewMeeting(Collection<Event> events,
                                                             long duration) {
-    sortEvents((List<Event>) events);
+    List<Event> sortedEvents = sortEvents(events);
     List<TimeRange> queryResult = new ArrayList<>();
     int currentTime = 0;
-    for (Event event : events) {
+    for (Event event : sortedEvents) {
       if (currentTime + duration <= event.getWhen().start()) {
         int end = (int) Math.max(event.getWhen().start(), currentTime + duration);
         queryResult.add(TimeRange.fromStartEnd(currentTime, end, false));
@@ -84,21 +84,13 @@ public final class FindMeetingQuery {
   private static List<Event> filterRelevantEvents(Collection<Event> events,
                                                   Collection<String> requestAttendees) {
     return events.stream()
-        .filter(
-            event -> {
-              Collection<String> eventCopy = new HashSet<>(event.getAttendees());
-              eventCopy.retainAll(requestAttendees);
-              return !eventCopy.isEmpty();
-            })
+        .filter(event -> event.getAttendees().stream().anyMatch(requestAttendees::contains))
         .collect(Collectors.toList());
   }
 
-  private static void sortEvents(List<Event> events) {
-    events.sort((Event e1, Event e2) -> {
-      if (e1.getWhen().start() == e2.getWhen().start()) {
-        return Integer.compare(e1.hashCode(), e2.hashCode());
-      }
-      return Integer.compare(e1.getWhen().start(), e2.getWhen().start());
-    });
+  private static List<Event> sortEvents(Collection<Event> events) {
+    return events.stream()
+        .sorted(Comparator.comparing(event -> event.getWhen().start()))
+        .collect(Collectors.toList());
   }
 }
