@@ -23,14 +23,20 @@ import java.util.stream.Collectors;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+    // Initial checks for validity of request.
+    if (request.getDuration() >= 0 && request.getDuration() <= 1440) {
+      return new ArrayList<>();
+    }
+
+    int requestDuration = (int) request.getDuration();
     List<TimeRange> requiredTimeRanges = findTimeSlotsForNewMeeting(
         filterRelevantEvents(events, request.getAttendees()),
-        request.getDuration());
+        requestDuration);
     List<TimeRange> optionalTimeRanges = findTimeSlotsForNewMeeting(
         filterRelevantEvents(events, request.getOptionalAttendees()),
-        request.getDuration());
+        requestDuration);
     List<TimeRange> intersection = findTimeRangesIntersections(
-        requiredTimeRanges, optionalTimeRanges, request.getDuration());
+        requiredTimeRanges, optionalTimeRanges, requestDuration);
     if (intersection.isEmpty()) {
       return requiredTimeRanges;
     }
@@ -39,7 +45,7 @@ public final class FindMeetingQuery {
 
   private static List<TimeRange> findTimeRangesIntersections(List<TimeRange> required,
                                                              List<TimeRange> optional,
-                                                             long duration) {
+                                                             int duration) {
     List<TimeRange> intersection = new ArrayList<>();
     for (TimeRange requiredTimeRange : required) {
       for (TimeRange optionalTimeRange : optional) {
@@ -62,14 +68,14 @@ public final class FindMeetingQuery {
   }
 
   private static List<TimeRange> findTimeSlotsForNewMeeting(Collection<Event> events,
-                                                            long duration) {
+                                                            int duration) {
     List<Event> sortedEvents = sortEvents(events);
     List<TimeRange> queryResult = new ArrayList<>();
     int currentTime = 0;
     for (Event event : sortedEvents) {
       if (currentTime + duration <= event.getWhen().start()) {
-        int end = (int) Math.max(event.getWhen().start(), currentTime + duration);
-        queryResult.add(TimeRange.fromStartEnd(currentTime, end, false));
+        int end = Math.max(event.getWhen().start(), currentTime + duration);
+        queryResult.add(TimeRange.fromStartDuration(currentTime, end - currentTime));
       }
       currentTime = Math.max(currentTime, event.getWhen().end());
     }
