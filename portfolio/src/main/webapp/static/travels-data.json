@@ -1,0 +1,39 @@
+{
+  "places": {
+    "berlin": {
+      "lat": 52.521999,
+      "lng": 13.413016,
+      "description": "My last trip was to Berlin. The photo was taken just after going shopping, I\"m a huge fan of it, as you can tell from my face."
+    },
+    "default": {
+      "lat": 52.048947,
+      "lng": 20.442758,
+      "description": "This is where I live -- a small town in the centre of Poland."
+    },
+    "disneyland": {
+      "lat": 48.869486,
+      "lng": 2.780874,
+      "description": "For my 19th birthday I visited France. The picture was taken at Disneyland."
+    },
+    "krakow": {
+      "lat": 50.061683,
+      "lng": 19.937111,
+      "description": "Kraków is previous capital of Poland and one of the most beautiful cities I have ever seen."
+    },
+    "kolobrzeg": {
+      "lat": 54.186629,
+      "lng": 15.570729,
+      "description": "This is a photo of me and Marek at the beach, watching sunset."
+    },
+    "matterhorn": {
+      "lat": 45.938319,
+      "lng": 7.731824,
+      "description": "This is a photo from my first trip to Zuerich, taken at the top of Uetliberg mountain"
+    },
+    "zurich": {
+      "lat": 47.349534,
+      "lng": 8.491872,
+      "description": "This is me in front of Matterhorn mountain, known from Toblerone."
+    }
+  }
+}
